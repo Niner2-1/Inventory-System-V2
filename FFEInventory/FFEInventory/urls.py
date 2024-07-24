@@ -23,5 +23,6 @@ urlpatterns = [
     path('', views.dashboard, name="dashboard"),
     path("logout/", views.logout_view, name="logout"),
     path("login/", views.login_view, name="login"),
-
+    path("items/", views.item_view, name="item_view"),
+    path("item/add/", views.add_Item, name="add_Item"),
 ]
