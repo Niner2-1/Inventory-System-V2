@@ -1,0 +1,258 @@
+{% extends 'root.html' %}
+{% block content %}
+<section class="content">
+<div class="row">
+<div class="col-xs-12">
+<div class="box">
+
+<div class="box-header with-border">
+    <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat">
+        <i class="fa fa-plus"></i> New
+    </a>
+    {% comment %} <a href="#reset" data-toggle="modal" class="btn btn-danger btn-sm btn-flat">
+        <i class="fa fa-refresh"></i> Reset Voter
+    </a> {% endcomment %}
+    {% comment %} <a href="#test" data-toggle="modal" class="btn btn-danger btn-sm btn-flat">
+        <i class="fa fa-refresh"></i> Test
+    </a> {% endcomment %}
+</div>
+
+
+<!-- Table --> 
+<div class="box-body">
+    <table id="example1" class="table table-bordered">
+        <thead>
+            <th>#</th>
+            <th>Name</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {% for branch in branches %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ branch.name }}</td>
+                <td>
+                    <button class='btn btn-success btn-sm edit btn-flat' data-id='{{ branch.id }}'><i class='fa fa-edit'></i> Edit</button>
+                    <button class='btn btn-danger btn-sm delete btn-flat' data-id='{{ branch.id }}'><i class='fa fa-trash'></i> Delete</button>
+                </td>
+            </tr>
+            {% endfor %}      
+        </tbody>
+    </table>
+</div>
+<!-- End Of Table --> 
+
+
+</div>
+</div>
+</div>
+</section>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal fade" id="addnew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Add New Branch</b></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'adminViewBranch' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="form-group">
+                        <label for="add_branch_name" class="col-sm-3 control-label">Branch Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="add_branch_name" name="branch_name" required />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                        <button type="submit" class="btn btn-success btn-flat" name="add"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete All Voter -->
+<div class="modal fade" id="reset">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><b>Reseting...</b></h4>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+                <p>RESET VOTERS</p>
+                <h4>This will delete all voters.</h4>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            <a href="" class="btn btn-danger btn-flat"><i class="fa fa-refresh"></i> Reset</a>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% comment %} 
+  <!-- Upload CSV -->
+  <div class="modal fade" id="test">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">✕</span>
+          </button>
+          <h4 class="modal-title">
+            <b>Upload CSV Voters</b>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal"
+                enctype="multipart/form-data"
+                method="post"
+                action="">
+            {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group has-feedback">
+                  {% if messages %}
+                    {% for message in messages %}
+                      <span class="text-danger">
+                        {{ message }}
+                      </span>
+                    {% endfor %}
+                  {% endif %}
+                  <input type="file" name="csv_file" class="form-control mb-3" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button"
+                      class="btn btn-default btn-flat pull-left"
+                      data-dismiss="modal">
+                <i class="fa fa-close"></i> Close
+              </button>
+              <button type="submit" class="btn btn-primary btn-flat" name="add">
+                <i class="fa fa-save"></i> Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>  {% endcomment %}
+
+
+<!-- Edit -->
+<div class="modal fade" id="edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"><b>Edit Voter</b></h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'updateBranch' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="form-group">
+                        <label for="edit_branch_name" class="col-sm-3 control-label">Branch Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="edit_branch_name" name="branch_name">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                        <button type="submit" class="btn btn-success btn-flat" name="edit"><i class="fa fa-check-square-o"></i> Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete -->
+<div class="modal fade" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Deleting...</b></h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'deleteBranch' %}" >
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="text-center">
+                        <p>DELETE BRANCH</p>
+                        <h2 class="bold branch_name"></h2>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                        <button type="submit" class="btn btn-danger btn-flat" name="delete"><i class="fa fa-trash"></i> Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock modal %}
+
+
+
+{% block custom_js %}
+  
+<script>
+  $(function() {
+      $(document).on('click', '.edit', function(e) {
+          e.preventDefault();
+          $('#edit').modal('show');
+          var id = $(this).data('id');
+          getRow(id);
+      });
+
+      $(document).on('click', '.delete', function(e) {
+          e.preventDefault();
+          $('#delete').modal('show');
+          var id = $(this).data('id');
+          getRow(id);
+      });
+  });
+
+  function getRow(id) {
+      $.ajax({
+          type: 'GET',
+          url: '{% url "viewBranch" %}',
+          data: {
+              id: id
+          },
+          dataType: 'json',
+          success: function(response) {
+              $('.id').val(response.id);
+              $('#edit_branch_name').val(response.branch_name);
+              $('.branch_name').html(response.branch_name);
+          }
+      });
+  }
+  </script>
+{% endblock custom_js %}
+  

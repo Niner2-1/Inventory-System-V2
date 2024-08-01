@@ -1,0 +1,488 @@
+{% extends 'root.html' %}
+{% block content %}
+<section class="content">
+<div class="row">
+<div class="col-xs-12">
+<div class="box">
+
+<div class="box-header with-border">
+    <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat">
+        <i class="fa fa-plus"></i> New
+    </a>
+</div>
+
+
+<!-- Table --> 
+<div class="box-body">
+    <table id="example1" class="table table-bordered">
+        <thead>
+            <th>FFE#</th>
+            <th>Custody</th>
+            <th>Item type</th>
+            <th>Status</th>
+            <th>Current Branch</th>
+            <th>Originating Branch</th>
+            <th>Date Purchased</th>
+            <th>Action</th>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.FFE_number }}</td>
+                <td>{{ item.custody }}</td>
+                <td>{{ item.item_type }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.current_branch }}</td>
+                <td>{{ item.originating_branch }}</td>
+                <td>{{ item.date_purchased }}</td>
+                <td>
+                    <button class='btn btn-success btn-sm edit btn-flat' data-id='{{ item.FFE_number }}'><i class='fa fa-edit'></i> Edit</button>
+                    <button class='btn btn-danger btn-sm delete btn-flat' data-id='{{ item.FFE_number }}'><i class='fa fa-trash'></i> Delete</button>
+                </td>
+            </tr>
+            {% endfor %}      
+        </tbody>
+    </table>
+</div>
+<!-- End Of Table --> 
+
+
+</div>
+</div>
+</div>
+</section>
+{% endblock content %}
+
+{% block modal %}
+<div class="modal fade" id="addnew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Add New Item</b></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'adminViewItems' %}">
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="form-group">
+                        <label for="add_FFE_number" class="col-sm-3 control-label">FFE Number</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="add_FFE_number" name="FFE_number" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_old_FFE" class="col-sm-3 control-label">Old FFE</label>
+                      <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_old_FFE" name="old_FFE" />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_item_type" class="col-sm-3 control-label">Item Type</label>
+                      <div class="col-sm-9">
+                          <select type="text" class="form-control" id="add_item_type" name="item_type" required >
+                            <option value="System Unit">System Unit</option>
+                            <option value="Monitor">Monitor</option>
+                            <option value="Printer">Printer</option>
+                            <option value="UPS">UPS</option>
+                            <option value="Hub">Hub</option>
+                          </select>
+                      </div>
+                    </div>
+
+                    <div class="optional-fields">
+                      <div class="form-group">
+                        <label for="add_processor" class="col-sm-3 control-label">Processor</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="add_processor" name="processor" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="optional-fields">
+                      <div class="form-group">
+                        <label for="add_memory" class="col-sm-3 control-label">Memory</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_memory" name="memory" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="optional-fields">
+                      <div class="form-group">
+                        <label for="add_video_card" class="col-sm-3 control-label">Video Card</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_video_card" name="video_card" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="optional-fields">
+                      <div class="form-group">
+                        <label for="add_hard_disk" class="col-sm-3 control-label">Hard Disk</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_hard_disk" name="hard_disk" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_others" class="col-sm-3 control-label">Others</label>
+                      <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_others" name="others" />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_description" class="col-sm-3 control-label">Description</label>
+                      <div class="col-sm-9">
+                          <textarea class="form-control" id="add_description" name="description"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_cost" class="col-sm-3 control-label">Cost</label>
+                      <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_cost" name="cost" required />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_date" class="col-sm-3 control-label">Date</label>
+                      <div class="col-sm-9">
+                          <input type="date" class="form-control" id="add_date" name="date" required />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_originating_branch" class="col-sm-3 control-label">Originating Branch</label>
+                      <div class="col-sm-9">
+                          <select type="date" class="form-control" id="add_originating_branch" name="originating_branch" required>
+                            <option value="" disabled>Select Branch</option>
+                            {% for branch in branches %}
+                              <option value="{{ branch.id }}">{{ branch.name }}</option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_status" class="col-sm-3 control-label">Status</label>
+                      <div class="col-sm-9">
+                          <select type="date" class="form-control" id="add_status" name="status" required>
+                            <option value="working">Working</option>
+                            <option value="disposed">Disposed</option>
+                            <option value="not working">Not working</option>
+                            <option value="for cleaning">For cleaning</option>
+                          </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="add_custody" class="col-sm-3 control-label">Custody</label>
+                      <div class="col-sm-9">
+                          <input type="text" class="form-control" id="add_custody" name="custody" required />
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                        <button type="submit" class="btn btn-success btn-flat" name="add"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete -->
+<div class="modal fade" id="delete">
+	<div class="modal-dialog">
+		<div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Deleting...</b></h4>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" method="POST" action="{% url 'deleteItem' %}" >
+                    {% csrf_token %}
+                    <input type="hidden" class="id" name="id">
+
+                    <div class="text-center">
+                        <p>DELETE Item</p>
+                        <h2 class="bold item_name"></h2>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                        <button type="submit" class="btn btn-danger btn-flat" name="delete"><i class="fa fa-trash"></i> Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+	</div>
+</div>
+
+
+<!-- Edit -->
+<div class="modal fade" id="edit">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><b>Edit Item: <span class="item-title"></span></b></h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" method="POST" action="{% url 'updateItem' %}">
+				{% csrf_token %}
+				<input type="hidden" class="id" name="id">
+
+				<div class="form-group">
+					<label for="edit_FFE_number" class="col-sm-3 control-label">FFE Number</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_FFE_number" name="FFE_number" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_old_FFE" class="col-sm-3 control-label">Old FFE</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_old_FFE" name="old_FFE" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_item_type" class="col-sm-3 control-label">Item Type</label>
+					<div class="col-sm-9">
+						<select type="text" class="form-control" id="edit_item_type" name="item_type" required >
+						<option value="system unit">System Unit</option>
+						<option value="monitor">Monitor</option>
+						<option value="printer">Printer</option>
+						<option value="ups">UPS</option>
+						<option value="hub">Hub</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_processor" class="col-sm-3 control-label">Processor</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_processor" name="processor" />
+					</div>
+					</div>
+				</div>
+
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_memory" class="col-sm-3 control-label">Memory</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_memory" name="memory" />
+					</div>
+					</div>
+				</div>
+
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_video_card" class="col-sm-3 control-label">Video Card</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_video_card" name="video_card" />
+					</div>
+					</div>
+				</div>
+				
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_hard_disk" class="col-sm-3 control-label">Hard Disk</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_hard_disk" name="hard_disk" />
+					</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_others" class="col-sm-3 control-label">Others</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_others" name="others" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_description" class="col-sm-3 control-label">Description</label>
+					<div class="col-sm-9">
+						<textarea class="form-control" id="edit_description" name="description"></textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_cost" class="col-sm-3 control-label">Cost</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_cost" name="cost" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_date_purchased" class="col-sm-3 control-label">Date</label>
+					<div class="col-sm-9">
+						<input type="date" class="form-control" id="edit_date_purchased" name="date" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_originating_branch" class="col-sm-3 control-label">Originating Branch</label>
+					<div class="col-sm-9">
+						<select type="date" class="form-control" id="edit_originating_branch" name="originating_branch" required>
+						<option value="" disabled>Select Branch</option>
+						{% for branch in branches %}
+							<option value="{{ branch.id }}">{{ branch.name }}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_status" class="col-sm-3 control-label">Status</label>
+					<div class="col-sm-9">
+						<select type="date" class="form-control" id="edit_status" name="status" required>
+						<option value="working">Working</option>
+						<option value="disposed">Disposed</option>
+						<option value="not working">Not working</option>
+						<option value="for cleaning">For cleaning</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_custody" class="col-sm-3 control-label">Custody</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_custody" name="custody" required />
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+					<button type="submit" class="btn btn-success btn-flat" name="edit"><i class="fa fa-save"></i> Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{% endblock modal %}
+
+
+
+{% block custom_js %}
+  
+<script>
+$(function() {
+	$(document).on('click', '.edit', function(e) {
+		e.preventDefault();
+		$('#edit').modal('show');
+		var id = $(this).data('id');
+		getEditRow(id);
+	});
+
+	
+});
+
+$(function() {
+	$(document).on('click', '.delete', function(e) {
+		e.preventDefault();
+		$('#delete').modal('show');	
+		var id = $(this).data('id');
+		getRow(id);
+	});
+})
+
+function getEditRow(id) {
+	$.ajax({
+		type: 'GET',
+		url: '{% url "viewItem" %}',
+		data: {
+			id: id
+		},
+		dataType: 'json',
+		success: function(response) {
+			$('.id').val(response.FFE_number);
+			$('#edit_FFE_number').val(response.FFE_number);
+			$('#edit_old_FFE').val(response.old_FFE);
+			$('#edit_item_type').val(response.item_type);
+			$('#edit_processor').val(response.processor);
+			$('#edit_motherboard').val(response.motherboard);
+			$('#edit_memory').val(response.memory);
+			$('#edit_hard_disk').val(response.hard_disk);
+			$('#edit_others').val(response.others);
+			$('#edit_cost').val(response.cost);
+			$('#edit_video_card').val(response.video_card);
+			$('#edit_date_purchased').val(response.date_purchased);
+			$('#edit_description').val(response.description);
+			$('#edit_originating_branch').val(response.originating_branch);
+			$('#edit_current_branch').val(response.current_branch);
+			$('#edit_status').val(response.status);
+			$('#edit_custody').val(response.custody);
+			$('.item-title').html(response.FFE_number);
+
+			var selectedItemType = $("#edit_item_type").val();
+				if (selectedItemType.toLowerCase() !== "system unit") {
+					$(".optional-fields").collapse('hide'); 
+				} else {
+					$(".optional-fields").collapse('show'); 
+				}
+			$("#edit_item_type").trigger("change");
+		}
+	});
+}
+
+ 
+function getRow(id) {
+	$.ajax({
+		type: 'GET',
+		url: '{% url "viewItem" %}',
+		data: {
+			id: id
+		},
+		dataType: 'json',
+		success: function(response) {
+			$('.id').val(response.FFE_number);
+			$('.item_name').html(response.FFE_number);
+		}
+	});
+}
+
+$(document).ready(function () {
+	$("#add_item_type").change(function () {
+		var selectedItemType = $(this).val();
+		if (selectedItemType.toLowerCase() === "system unit") {
+		$(".optional-fields").collapse('show');
+
+		} else {
+		$(".optional-fields").collapse('hide');
+		}
+	});
+	$("#add_item_type").trigger("change");
+
+	$("#edit_item_type").change(function() {
+		var selectedItemType = $(this).val();
+		if (selectedItemType.toLowerCase() !== "system unit") {
+			$(".optional-fields").collapse('hide');
+		} else {
+			$(".optional-fields").collapse('show');
+		}
+	});
+
+	$("#edit_item_type").trigger("change");
+});
+
+</script>
+{% endblock custom_js %}
+  

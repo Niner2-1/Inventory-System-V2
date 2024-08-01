@@ -1,0 +1,160 @@
+{% extends 'root.html' %} {% load static %} {% block content %}
+<!-- Main content -->
+<section class="content">
+  <!-- Small boxes (Stat box) -->
+  <div class="row">
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-aqua">
+        <div class="inner">
+          <h3>{{ Item_count }}</h3>
+          <p>No. of Item</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-tasks"></i>
+        </div>
+        <a href="" class="small-box-footer"
+          >More info <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-green">
+        <div class="inner">
+          <h3>{{ candidate_count }}</h3>
+          <p>No. of Candidates</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-black-tie"></i>
+        </div>
+        <a href="" class="small-box-footer"
+          >More info <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-yellow">
+        <div class="inner">
+          <h3>{{ Branch_count }}</h3>
+          <p>Total Branch</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-users"></i>
+        </div>
+        <a href="" class="small-box-footer"
+          >More info <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+      <div class="small-box bg-red">
+        <div class="inner">
+          <h3>{{ voted_voters_count }}</h3>
+          <p>Voters Voted</p>
+        </div>
+        <div class="icon">
+          <i class="fa fa-edit"></i>
+        </div>
+        <a href="" class="small-box-footer"
+          >More info <i class="fa fa-arrow-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <!-- ./col -->
+  </div>
+
+  {% comment %} <div class="row">
+    <div class="col-xs-12">
+      <h3>
+        Votes Tally
+        <span class="pull-right">
+          <a href="" class="btn btn-success btn-sm btn-flat"
+            ><span class="glyphicon glyphicon-print"></span> Tally Sheet</a
+          >
+          <a href="" class="btn btn-success btn-sm btn-flat"
+            ><span class="glyphicon glyphicon-print"></span> Print Result</a
+          >
+        </span>
+      </h3>
+    </div>
+  </div> {% endcomment %}
+
+  <div class="row">
+    {% for position in positions %}
+    <div class="col-sm-4">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <h4 class="box-title"><b>{{ position.name }}</b></h4>
+        </div>
+        <div class="box-body">
+          <div class="chart">
+            <canvas
+              id="{{ position.name|slugify }}"
+              style="height: 150px; width: 150px"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock content %} {% block custom_js %}
+<!-- Custom JavaScript code for chart initialization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      {% for key, value in chart_data.items %}
+      var ctx = document.getElementById('{{ key.name|slugify }}').getContext('2d');
+      new Chart(ctx, {
+          type: 'pie', // Change type to 'pie' for pie chart
+          data: {
+              labels: {{ value.candidates|safe }},
+              datasets: [{
+                  label: 'Votes',
+                  data: {{ value.votes|safe }},
+                  backgroundColor: [
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(255, 99, 132, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      // Add more colors as needed
+                  ],
+                  borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                      // Add more colors as needed
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      display: false // Hide the Y-axis
+                  }
+              },
+              plugins: {
+                  legend: {
+                      display: true,
+                      position: 'bottom'
+                  }
+              }
+          }
+      });
+      {% endfor %}
+  });
+</script>
+{% endblock custom_js %}

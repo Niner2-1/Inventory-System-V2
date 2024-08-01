@@ -1,6 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
-# Create your models here.
 
 class Branch(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
@@ -24,7 +24,7 @@ class Item(models.Model):
         ("ups", "UPS"),
         ("hub", "Hub"),
     ]
-    FFE_number = models.CharField(max_length=255, primary_key=True)
+    FFE_number = models.CharField(max_length=255, null=False, blank=False, unique=True)
     old_FFE = models.CharField(max_length=255, null=True, blank=True, unique=True)
     item_type = models.CharField(max_length=255, choices=ITEM_TYPE_CHOICES, null=False, blank=False)
     processor = models.CharField(max_length=255, null=True, blank=True)
