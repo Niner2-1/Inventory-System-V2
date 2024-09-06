@@ -113,7 +113,7 @@
       {% for key, value in chart_data.items %}
       var ctx = document.getElementById('{{ key.name|slugify }}').getContext('2d');
       new Chart(ctx, {
-          type: 'pie', // Change type to 'pie' for pie chart
+          type: 'bar', // Change type to 'pie' for pie chart
           data: {
               labels: {{ value.candidates|safe }},
               datasets: [{

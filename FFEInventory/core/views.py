@@ -97,7 +97,17 @@ def transaction(request):
     return render(request, "admin/transaction.html", context)
 
 
+def deleteTransaction(request):
+    if request.method != "POST":
+        messages.error(request, "Access Denied")
+    try:
+        transaction = Transaction.objects.get(id=request.POST.get("id"))
+        transaction.delete()
+        messages.success(request, "transaction Has Been Deleted")
+    except:
+        messages.error(request, "Access To This Resource Denied")
 
+    return redirect(reverse("adminViewTransactions"))
 
 
 @login_required

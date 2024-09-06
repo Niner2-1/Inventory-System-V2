@@ -136,7 +136,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" method="POST" action="{% url 'deleteItem' %}" >
+                <form class="form-horizontal" method="POST" action="{% url 'deleteTransaction' %}" >
                     {% csrf_token %}
                     <input type="hidden" class="id" name="id">
 

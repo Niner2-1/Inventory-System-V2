@@ -15,6 +15,7 @@ urlpatterns = [
     path("branch/delete", views.deleteBranch, name="deleteBranch"),
     # * Transactions
     path("transaction", views.transaction, name="adminViewTransactions"),
-    path('get-item-details/', views.get_item_details, name='getItemDetails')
+    path('get-item-details/', views.get_item_details, name='getItemDetails'),
+    path("transaction/delete", views.deleteTransaction, name="deleteTransaction")
 
 ]

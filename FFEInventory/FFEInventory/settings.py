@@ -7,7 +7,7 @@ SECRET_KEY = "django-insecure-&zbqf3sh#&=h#kl^f)a$npczrw)m9!+)=qg%-1$b&u(%j3x27m
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["192.168.56.1", "0.0.0.0.0", "127.0.0.1"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -49,10 +49,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "FFEInventory.wsgi.application"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'inventorydb',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',  # Usually 'localhost'
+        'PORT': '3306',  # Default MySQL port
     }
 }
 

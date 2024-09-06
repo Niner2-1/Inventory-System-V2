@@ -38,7 +38,8 @@
                 <td>
                     <button class='btn btn-success btn-sm edit btn-flat' data-id='{{ item.FFE_number }}'><i class='fa fa-edit'></i> Edit</button>
                     <button class='btn btn-danger btn-sm delete btn-flat' data-id='{{ item.FFE_number }}'><i class='fa fa-trash'></i> Delete</button>
-                </td>
+					<button class='btn btn-success btn-sm view btn-flat' data-id='{{ item.FFE_number }}'><i class='fa fa-edit'></i> View</button>
+				</td>
             </tr>
             {% endfor %}      
         </tbody>
@@ -377,6 +378,168 @@
 </div>
 
 
+
+
+
+
+
+
+
+
+
+
+<!-- View -->
+<div class="modal fade" id="view">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><b>Edit Item: <span class="item-title"></span></b></h4>
+			</div>
+			{% comment %} <div class="modal-body">
+				<form class="form-horizontal" method="POST" action="{% url 'updateItem' %}">
+				{% csrf_token %}
+				<input type="hidden" class="id" name="id">
+
+				<div class="form-group">
+					<label for="edit_FFE_number" class="col-sm-3 control-label">FFE Number</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_FFE_number" name="FFE_number" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_old_FFE" class="col-sm-3 control-label">Old FFE</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_old_FFE" name="old_FFE" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_item_type" class="col-sm-3 control-label">Item Type</label>
+					<div class="col-sm-9">
+						<select type="text" class="form-control" id="edit_item_type" name="item_type" required >
+						<option value="system unit">System Unit</option>
+						<option value="monitor">Monitor</option>
+						<option value="printer">Printer</option>
+						<option value="ups">UPS</option>
+						<option value="hub">Hub</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_processor" class="col-sm-3 control-label">Processor</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_processor" name="processor" />
+					</div>
+					</div>
+				</div>
+
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_memory" class="col-sm-3 control-label">Memory</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_memory" name="memory" />
+					</div>
+					</div>
+				</div>
+
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_video_card" class="col-sm-3 control-label">Video Card</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_video_card" name="video_card" />
+					</div>
+					</div>
+				</div>
+				
+				<div class="optional-fields">
+					<div class="form-group">
+					<label for="edit_hard_disk" class="col-sm-3 control-label">Hard Disk</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_hard_disk" name="hard_disk" />
+					</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_others" class="col-sm-3 control-label">Others</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_others" name="others" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_description" class="col-sm-3 control-label">Description</label>
+					<div class="col-sm-9">
+						<textarea class="form-control" id="edit_description" name="description"></textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_cost" class="col-sm-3 control-label">Cost</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_cost" name="cost" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_date_purchased" class="col-sm-3 control-label">Date</label>
+					<div class="col-sm-9">
+						<input type="date" class="form-control" id="edit_date_purchased" name="date" required />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_originating_branch" class="col-sm-3 control-label">Originating Branch</label>
+					<div class="col-sm-9">
+						<select type="date" class="form-control" id="edit_originating_branch" name="originating_branch" required>
+						<option value="" disabled>Select Branch</option>
+						{% for branch in branches %}
+							<option value="{{ branch.id }}">{{ branch.name }}</option>
+						{% endfor %}
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_status" class="col-sm-3 control-label">Status</label>
+					<div class="col-sm-9">
+						<select type="date" class="form-control" id="edit_status" name="status" required>
+						<option value="working">Working</option>
+						<option value="disposed">Disposed</option>
+						<option value="not working">Not working</option>
+						<option value="for cleaning">For cleaning</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="edit_custody" class="col-sm-3 control-label">Custody</label>
+					<div class="col-sm-9">
+						<input type="text" class="form-control" id="edit_custody" name="custody" required />
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+					<button type="submit" class="btn btn-success btn-flat" name="edit"><i class="fa fa-save"></i> Save</button>
+				</div>
+				</form>
+			</div> {% endcomment %}
+	</div>
+</div>
+
+
+
+
+
+
+
+
 {% endblock modal %}
 
 
@@ -384,104 +547,132 @@
 {% block custom_js %}
   
 <script>
+// This block of code sets up a click event listener for elements with the class 'edit'.
+// When an 'edit' button is clicked, it prevents the default behavior (e.g., following a link),
+// shows a modal with the ID 'edit', and then retrieves the data associated with that item
+// by calling the 'getEditRow' function with the item's ID.
 $(function() {
-	$(document).on('click', '.edit', function(e) {
-		e.preventDefault();
-		$('#edit').modal('show');
-		var id = $(this).data('id');
-		getEditRow(id);
-	});
-
-	
+    $(document).on('click', '.edit', function(e) {
+        e.preventDefault();  // Prevents default action, typically a link's navigation.
+        $('#edit').modal('show');  // Shows the modal with the ID 'edit'.
+        var id = $(this).data('id');  // Gets the data-id attribute value of the clicked element.
+        getEditRow(id);  // Calls the 'getEditRow' function, passing the ID to retrieve item data.
+    });
 });
 
+
+// This block of code sets up a click event listener for elements with the class 'delete'.
+// When a 'delete' button is clicked, it prevents the default behavior,
+// shows a modal with the ID 'delete', and then retrieves the data associated with that item
+// by calling the 'getRow' function with the item's ID.
 $(function() {
-	$(document).on('click', '.delete', function(e) {
-		e.preventDefault();
-		$('#delete').modal('show');	
-		var id = $(this).data('id');
-		getRow(id);
-	});
+    $(document).on('click', '.delete', function(e) {
+        e.preventDefault();  // Prevents default action, typically a link's navigation.
+        $('#delete').modal('show');  // Shows the modal with the ID 'delete'.
+        //var id = $(this).data('id');  // Gets the data-id attribute value of the clicked element.
+        //etRow(id);  // Calls the 'getRow' function, passing the ID to retrieve item data.
+    });
 })
 
-function getEditRow(id) {
-	$.ajax({
-		type: 'GET',
-		url: '{% url "viewItem" %}',
-		data: {
-			id: id
-		},
-		dataType: 'json',
-		success: function(response) {
-			$('.id').val(response.FFE_number);
-			$('#edit_FFE_number').val(response.FFE_number);
-			$('#edit_old_FFE').val(response.old_FFE);
-			$('#edit_item_type').val(response.item_type);
-			$('#edit_processor').val(response.processor);
-			$('#edit_motherboard').val(response.motherboard);
-			$('#edit_memory').val(response.memory);
-			$('#edit_hard_disk').val(response.hard_disk);
-			$('#edit_others').val(response.others);
-			$('#edit_cost').val(response.cost);
-			$('#edit_video_card').val(response.video_card);
-			$('#edit_date_purchased').val(response.date_purchased);
-			$('#edit_description').val(response.description);
-			$('#edit_originating_branch').val(response.originating_branch);
-			$('#edit_current_branch').val(response.current_branch);
-			$('#edit_status').val(response.status);
-			$('#edit_custody').val(response.custody);
-			$('.item-title').html(response.FFE_number);
-
-			var selectedItemType = $("#edit_item_type").val();
-				if (selectedItemType.toLowerCase() !== "system unit") {
-					$(".optional-fields").collapse('hide'); 
-				} else {
-					$(".optional-fields").collapse('show'); 
-				}
-			$("#edit_item_type").trigger("change");
-		}
-	});
-}
-
- 
-function getRow(id) {
-	$.ajax({
-		type: 'GET',
-		url: '{% url "viewItem" %}',
-		data: {
-			id: id
-		},
-		dataType: 'json',
-		success: function(response) {
-			$('.id').val(response.FFE_number);
-			$('.item_name').html(response.FFE_number);
-		}
-	});
-}
-
-$(document).ready(function () {
-	$("#add_item_type").change(function () {
-		var selectedItemType = $(this).val();
-		if (selectedItemType.toLowerCase() === "system unit") {
-		$(".optional-fields").collapse('show');
-
-		} else {
-		$(".optional-fields").collapse('hide');
-		}
-	});
-	$("#add_item_type").trigger("change");
-
-	$("#edit_item_type").change(function() {
-		var selectedItemType = $(this).val();
-		if (selectedItemType.toLowerCase() !== "system unit") {
-			$(".optional-fields").collapse('hide');
-		} else {
-			$(".optional-fields").collapse('show');
-		}
-	});
-
-	$("#edit_item_type").trigger("change");
+// This block of code sets up a click event listener for elements with the class 'view'.
+// When an 'view' button is clicked, it prevents the default behavior (e.g., following a link),
+// shows a modal with the ID 'view', and then retrieves the data associated with that item
+// by calling the 'getEditRow' function with the item's ID.
+$(function() {
+    $(document).on('click', '.view', function(e) {
+        e.preventDefault();  // Prevents default action, typically a link's navigation.
+        $('#view').modal('show');  // Shows the modal with the ID 'view'.
+        var id = $(this).data('id');  // Gets the data-id attribute value of the clicked element.
+        getEditRow(id);  // Calls the 'getEditRow' function, passing the ID to retrieve item data.
+    });
 });
+
+// This function sends an AJAX GET request to retrieve the data for a specific item using its ID.
+// The data is sent to the URL corresponding to the 'viewItem' Django view. 
+// Upon a successful response, it populates various fields in the 'edit' modal with the data retrieved.
+function getEditRow(id) {
+    $.ajax({
+        type: 'GET',  // Specifies the request type as GET.
+        url: '{% url "viewItem" %}',  // Django template tag to dynamically insert the URL for 'viewItem'.
+        data: { id: id },  // Sends the ID of the item as part of the request data.
+        dataType: 'json',  // Specifies the data type expected from the server as JSON.
+        success: function(response) {  // Function to run if the AJAX request is successful.
+            // Populates the form fields in the 'edit' modal with the data received from the server.
+            $('.id').val(response.FFE_number);
+            $('#edit_FFE_number').val(response.FFE_number);
+            $('#edit_old_FFE').val(response.old_FFE);
+            $('#edit_item_type').val(response.item_type);
+            $('#edit_processor').val(response.processor);
+            $('#edit_motherboard').val(response.motherboard);
+            $('#edit_memory').val(response.memory);
+            $('#edit_hard_disk').val(response.hard_disk);
+            $('#edit_others').val(response.others);
+            $('#edit_cost').val(response.cost);
+            $('#edit_video_card').val(response.video_card);
+            $('#edit_date_purchased').val(response.date_purchased);
+            $('#edit_description').val(response.description);
+            $('#edit_originating_branch').val(response.originating_branch);
+            $('#edit_current_branch').val(response.current_branch);
+            $('#edit_status').val(response.status);
+            $('#edit_custody').val(response.custody);
+            $('.item-title').html(response.FFE_number);  // Updates the modal's title with the item's FFE number.
+
+            // Conditional logic to show or hide optional fields based on the selected item type.
+            var selectedItemType = $("#edit_item_type").val();  // Gets the current value of the item type dropdown.
+            if (selectedItemType.toLowerCase() !== "system unit") {
+                $(".optional-fields").collapse('hide');  // Hides optional fields if item type is not "system unit".
+            } else {
+                $(".optional-fields").collapse('show');  // Shows optional fields if item type is "system unit".
+            }
+            $("#edit_item_type").trigger("change");  // Manually triggers the change event to ensure UI consistency.
+        }
+    });
+}
+
+
+// This function is similar to 'getEditRow' but is used when retrieving data for deletion confirmation.
+// It sends an AJAX GET request to retrieve the data for a specific item using its ID.
+// Upon a successful response, it populates relevant fields in the 'delete' modal.
+function getRow(id) {
+    $.ajax({
+        type: 'GET',  // Specifies the request type as GET.
+        url: '{% url "viewItem" %}',  // Django template tag to dynamically insert the URL for 'viewItem'.
+        data: { id: id },  // Sends the ID of the item as part of the request data.
+        dataType: 'json',  // Specifies the data type expected from the server as JSON.
+        success: function(response) {  // Function to run if the AJAX request is successful.
+            // Populates the form fields in the 'delete' modal with the data received from the server.
+            $('.id').val(response.FFE_number);
+            $('.item_name').html(response.FFE_number);  // Updates the modal's item name with the item's FFE number.
+        }
+    });
+}
+
+
+// This block sets up event listeners for the 'add_item_type' and 'edit_item_type' dropdowns.
+// It handles showing or hiding optional fields based on the selected item type.
+$(document).ready(function () {
+    $("#add_item_type").change(function () {  // Event listener for when 'add_item_type' dropdown changes.
+        var selectedItemType = $(this).val();  // Gets the current value of the dropdown.
+        if (selectedItemType.toLowerCase() === "system unit") {
+            $(".optional-fields").collapse('show');  // Shows optional fields if "system unit" is selected.
+        } else {
+            $(".optional-fields").collapse('hide');  // Hides optional fields for other item types.
+        }
+    });
+    $("#add_item_type").trigger("change");  // Manually triggers the change event on page load.
+
+    $("#edit_item_type").change(function() {  // Event listener for when 'edit_item_type' dropdown changes.
+        var selectedItemType = $(this).val();  // Gets the current value of the dropdown.
+        if (selectedItemType.toLowerCase() !== "system unit") {
+            $(".optional-fields").collapse('hide');  // Hides optional fields if not "system unit".
+        } else {
+            $(".optional-fields").collapse('show');  // Shows optional fields if "system unit" is selected.
+        }
+    });
+
+    $("#edit_item_type").trigger("change");  // Manually triggers the change event on page load.
+});
+
 
 </script>
 {% endblock custom_js %}
